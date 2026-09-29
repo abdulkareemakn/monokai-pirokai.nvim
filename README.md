@@ -30,6 +30,7 @@ Use `:colorscheme pirokai-arctic` for Arctic Frost or `:colorscheme pirokai-suns
 
 ```lua
 vim.cmd.colorscheme("pirokai-sunset")
+vim.cmd.colorscheme("pirokai-arctic")
 ```
 
 The theme sets terminal colors and supports Neovim's built-in syntax, Tree-sitter, LSP and diagnostics. It also defines highlights for Telescope, blink.cmp, nvim-cmp, Gitsigns, Neo-tree, nvim-tree, which-key, and Trouble. Those plugins are optional.
