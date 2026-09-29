@@ -208,6 +208,7 @@ local function groups(c)
 		TelescopeBorder = "FloatBorder",
 		TelescopeSelection = "PmenuSel",
 		TelescopeMatching = "SpecialChar",
+		SnacksPickerDir = "Directory",
 		CmpItemAbbr = "Pmenu",
 		CmpItemAbbrMatch = "Function",
 		CmpItemAbbrMatchFuzzy = "Function",
