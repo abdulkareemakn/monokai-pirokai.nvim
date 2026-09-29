@@ -18,9 +18,6 @@ vim.cmd.colorscheme("pirokai-arctic")
   "abdulkareemakn/monokai-pirokai.nvim",
   lazy = false,
   priority = 1000,
-  config = function()
-    vim.cmd.colorscheme("pirokai-arctic")
-  end,
 }
 ```
 
