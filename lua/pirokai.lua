@@ -1,0 +1,347 @@
+local M = {}
+
+M.palettes = {
+	arctic = {
+		bg = "#181A1F",
+		fg = "#ABB2BF",
+		text = "#E2E2E3",
+		comment = "#7F8490",
+		muted = "#7F8490",
+		surface = "#2C2E34",
+		elevated = "#30323A",
+		selection = "#363C49",
+		red = "#FC5D7C",
+		orange = "#F39660",
+		yellow = "#E7C664",
+		green = "#9ED072",
+		cyan = "#76CCE0",
+		purple = "#B39DF3",
+		blue = "#61AFEF",
+		error = "#C24038",
+	},
+	sunset = {
+		bg = "#131313",
+		fg = "#F7F1FF",
+		text = "#F7F1FF",
+		comment = "#69676C",
+		muted = "#8B888F",
+		surface = "#222222",
+		elevated = "#363537",
+		selection = "#2B2A2C",
+		red = "#FC618D",
+		orange = "#FD9353",
+		yellow = "#FCE566",
+		green = "#7BD88F",
+		cyan = "#5AD4E6",
+		purple = "#948AE3",
+		blue = "#5AD4E6",
+		error = "#FC618D",
+	},
+}
+
+local function groups(c)
+	local g = {
+		Normal = { fg = c.fg, bg = c.bg },
+		NormalNC = { link = "Normal" },
+		NormalFloat = { fg = c.text, bg = c.surface },
+		FloatBorder = { fg = c.muted, bg = c.surface },
+		WinSeparator = { fg = c.surface },
+		EndOfBuffer = { fg = c.bg },
+		Cursor = { fg = c.bg, bg = c.blue },
+		lCursor = { link = "Cursor" },
+		CursorIM = { link = "Cursor" },
+		CursorLine = { bg = c.surface },
+		CursorColumn = { link = "CursorLine" },
+		ColorColumn = { bg = c.surface },
+		LineNr = { fg = c.comment },
+		CursorLineNr = { fg = c.text, bold = true },
+		SignColumn = { fg = c.comment, bg = c.bg },
+		Visual = { bg = c.selection },
+		VisualNOS = { link = "Visual" },
+		Search = { fg = c.bg, bg = c.yellow },
+		IncSearch = { fg = c.bg, bg = c.orange },
+		CurSearch = { fg = c.bg, bg = c.red },
+		Substitute = { link = "IncSearch" },
+		MatchParen = { fg = c.yellow, bg = c.elevated, bold = true },
+		Pmenu = { fg = c.text, bg = c.elevated },
+		PmenuSel = { fg = c.bg, bg = c.cyan, bold = true },
+		PmenuSbar = { bg = c.surface },
+		PmenuThumb = { bg = c.muted },
+		StatusLine = { fg = c.text, bg = c.elevated },
+		StatusLineNC = { fg = c.comment, bg = c.surface },
+		TabLine = { fg = c.comment, bg = c.surface },
+		TabLineSel = { fg = c.bg, bg = c.cyan, bold = true },
+		TabLineFill = { bg = c.bg },
+		WinBar = { fg = c.text, bg = c.bg, bold = true },
+		WinBarNC = { fg = c.comment, bg = c.bg },
+		Folded = { fg = c.comment, bg = c.surface },
+		FoldColumn = { fg = c.comment, bg = c.bg },
+		NonText = { fg = c.surface },
+		Whitespace = { fg = c.surface },
+		SpecialKey = { fg = c.surface },
+		Conceal = { fg = c.comment },
+		Directory = { fg = c.cyan },
+		Title = { fg = c.cyan, bold = true },
+		Question = { fg = c.green },
+		MoreMsg = { fg = c.green },
+		ModeMsg = { fg = c.yellow, bold = true },
+		WarningMsg = { fg = c.orange },
+		ErrorMsg = { fg = c.error },
+		Comment = { fg = c.comment, italic = true },
+		Constant = { fg = c.purple },
+		String = { fg = c.yellow },
+		Character = { link = "String" },
+		Number = { fg = c.purple },
+		Boolean = { fg = c.purple, italic = true },
+		Float = { link = "Number" },
+		Identifier = { fg = c.text },
+		Function = { fg = c.green },
+		Statement = { fg = c.red },
+		Conditional = { link = "Statement" },
+		Repeat = { link = "Statement" },
+		Label = { fg = c.red },
+		Operator = { fg = c.red },
+		Keyword = { fg = c.red },
+		Exception = { fg = c.red },
+		PreProc = { fg = c.orange },
+		Include = { fg = c.red },
+		Define = { fg = c.red },
+		Macro = { fg = c.orange },
+		PreCondit = { fg = c.orange },
+		Type = { fg = c.cyan },
+		StorageClass = { fg = c.cyan },
+		Structure = { fg = c.cyan },
+		Typedef = { fg = c.cyan },
+		Special = { fg = c.orange },
+		SpecialChar = { fg = c.orange },
+		Tag = { fg = c.red },
+		Delimiter = { fg = c.muted },
+		SpecialComment = { fg = c.comment, bold = true },
+		Debug = { fg = c.red },
+		Underlined = { fg = c.blue, underline = true },
+		Ignore = { fg = c.comment },
+		Error = { fg = c.error },
+		Todo = { fg = c.bg, bg = c.yellow, bold = true },
+		DiffAdd = { fg = c.green, bg = c.surface },
+		DiffChange = { fg = c.cyan, bg = c.surface },
+		DiffDelete = { fg = c.red, bg = c.surface },
+		DiffText = { fg = c.bg, bg = c.cyan, bold = true },
+		DiagnosticError = { fg = c.error },
+		DiagnosticWarn = { fg = c.orange },
+		DiagnosticInfo = { fg = c.cyan },
+		DiagnosticHint = { fg = c.green },
+		DiagnosticUnderlineError = { undercurl = true, sp = c.error },
+		DiagnosticUnderlineWarn = { undercurl = true, sp = c.orange },
+		DiagnosticUnderlineInfo = { undercurl = true, sp = c.cyan },
+		DiagnosticUnderlineHint = { undercurl = true, sp = c.green },
+		DiagnosticVirtualTextError = { fg = c.error, bg = c.surface },
+		DiagnosticVirtualTextWarn = { fg = c.orange, bg = c.surface },
+		DiagnosticVirtualTextInfo = { fg = c.cyan, bg = c.surface },
+		DiagnosticVirtualTextHint = { fg = c.green, bg = c.surface },
+		LspReferenceText = { bg = c.elevated },
+		LspReferenceRead = { link = "LspReferenceText" },
+		LspReferenceWrite = { bg = c.elevated, underline = true },
+		LspCodeLens = { fg = c.comment },
+		LspInlayHint = { fg = c.comment, bg = c.surface, italic = true },
+	}
+
+	local links = {
+		["@comment"] = "Comment",
+		["@comment.documentation"] = "SpecialComment",
+		["@comment.todo"] = "Todo",
+		["@string"] = "String",
+		["@string.documentation"] = "String",
+		["@string.escape"] = "SpecialChar",
+		["@string.regexp"] = "SpecialChar",
+		["@character"] = "Character",
+		["@constant"] = "Constant",
+		["@constant.builtin"] = "Constant",
+		["@constant.macro"] = "Macro",
+		["@number"] = "Number",
+		["@number.float"] = "Float",
+		["@boolean"] = "Boolean",
+		["@function"] = "Function",
+		["@function.call"] = "Function",
+		["@function.builtin"] = "Function",
+		["@function.method"] = "Function",
+		["@function.method.call"] = "Function",
+		["@constructor"] = "Function",
+		["@type"] = "Type",
+		["@type.builtin"] = "Type",
+		["@type.definition"] = "Typedef",
+		["@module"] = "Type",
+		["@keyword"] = "Keyword",
+		["@keyword.function"] = "Keyword",
+		["@keyword.operator"] = "Operator",
+		["@keyword.return"] = "Keyword",
+		["@keyword.conditional"] = "Conditional",
+		["@keyword.repeat"] = "Repeat",
+		["@operator"] = "Operator",
+		["@variable"] = "Identifier",
+		["@variable.member"] = "Identifier",
+		["@property"] = "Identifier",
+		["@tag"] = "Tag",
+		["@tag.attribute"] = "Type",
+		["@tag.delimiter"] = "Delimiter",
+		["@punctuation.delimiter"] = "Delimiter",
+		["@punctuation.bracket"] = "Delimiter",
+		["@punctuation.special"] = "SpecialChar",
+		["@markup.heading"] = "Title",
+		["@markup.link"] = "Underlined",
+		["@markup.link.url"] = "Underlined",
+		["@markup.raw"] = "String",
+		["@markup.italic"] = "Comment",
+		["@markup.quote"] = "Comment",
+		["@diff.plus"] = "DiffAdd",
+		["@diff.delta"] = "DiffChange",
+		["@diff.minus"] = "DiffDelete",
+		["@lsp.type.enumMember"] = "Constant",
+		["@lsp.type.parameter"] = "@variable.parameter",
+		["@lsp.type.property"] = "@property",
+		["@lsp.type.type"] = "Type",
+		["@lsp.type.class"] = "Type",
+		["@lsp.type.function"] = "Function",
+		["@lsp.type.method"] = "Function",
+		["@lsp.typemod.function.defaultLibrary"] = "@function.builtin",
+		["@lsp.typemod.variable.defaultLibrary"] = "@variable.builtin",
+		TelescopeNormal = "NormalFloat",
+		TelescopeBorder = "FloatBorder",
+		TelescopeSelection = "PmenuSel",
+		TelescopeMatching = "SpecialChar",
+		CmpItemAbbr = "Pmenu",
+		CmpItemAbbrMatch = "Function",
+		CmpItemAbbrMatchFuzzy = "Function",
+		CmpItemMenu = "Comment",
+		BlinkCmpMenu = "Pmenu",
+		BlinkCmpMenuSelection = "PmenuSel",
+		BlinkCmpLabelMatch = "Function",
+		GitSignsAdd = "DiffAdd",
+		GitSignsChange = "DiffChange",
+		GitSignsDelete = "DiffDelete",
+		NeoTreeNormal = "Normal",
+		NeoTreeNormalNC = "NormalNC",
+		NeoTreeDirectoryName = "Directory",
+		NeoTreeGitAdded = "DiffAdd",
+		NeoTreeGitModified = "DiffChange",
+		NeoTreeGitDeleted = "DiffDelete",
+		NvimTreeNormal = "Normal",
+		NvimTreeFolderName = "Directory",
+		WhichKey = "Keyword",
+		WhichKeyGroup = "Type",
+		WhichKeyDesc = "Function",
+		WhichKeySeparator = "Comment",
+		WhichKeyFloat = "NormalFloat",
+		TroubleNormal = "Normal",
+		TroubleNormalNC = "NormalNC",
+		TroubleCount = "Constant",
+		TroubleText = "Normal",
+	}
+	for name, link in pairs(links) do
+		g[name] = { link = link }
+	end
+
+	g["@variable.parameter"] = { fg = c.orange, italic = true }
+	g["@variable.builtin"] = { fg = c.orange, italic = true }
+	g["@markup.strong"] = { bold = true }
+	g["@markup.list"] = { fg = c.red }
+	g["@property.json"] = { fg = c.cyan }
+	g["@tag.html"] = { fg = c.red }
+	g["@tag.tsx"] = { fg = c.red }
+	g["@property.css"] = { fg = c.cyan }
+	g["@type.qualifier.css"] = { fg = c.red }
+
+	local kinds = {
+		Text = c.text,
+		Method = c.green,
+		Function = c.green,
+		Constructor = c.cyan,
+		Field = c.text,
+		Variable = c.text,
+		Class = c.cyan,
+		Interface = c.cyan,
+		Module = c.cyan,
+		Property = c.text,
+		Unit = c.purple,
+		Value = c.purple,
+		Enum = c.cyan,
+		Keyword = c.red,
+		Snippet = c.orange,
+		Color = c.yellow,
+		File = c.cyan,
+		Reference = c.orange,
+		Folder = c.cyan,
+		EnumMember = c.purple,
+		Constant = c.purple,
+		Struct = c.cyan,
+		Event = c.orange,
+		Operator = c.red,
+		TypeParameter = c.cyan,
+	}
+	for kind, color in pairs(kinds) do
+		g["CmpItemKind" .. kind] = { fg = color }
+		g["BlinkCmpKind" .. kind] = { fg = color }
+	end
+	return g
+end
+
+local terminal_keys = {
+	"bg",
+	"red",
+	"green",
+	"yellow",
+	"blue",
+	"purple",
+	"cyan",
+	"fg",
+	"comment",
+	"red",
+	"green",
+	"yellow",
+	"blue",
+	"purple",
+	"cyan",
+	"text",
+}
+
+function M.load(variant)
+	local c = assert(M.palettes[variant], "unknown Pirokai variant: " .. tostring(variant))
+	vim.o.termguicolors = true
+	vim.o.background = "dark"
+	vim.cmd.highlight("clear")
+	if vim.fn.exists("syntax_on") == 1 then
+		vim.cmd.syntax("reset")
+	end
+	for name, value in pairs(groups(c)) do
+		vim.api.nvim_set_hl(0, name, value)
+	end
+	for i, key in ipairs(terminal_keys) do
+		vim.g["terminal_color_" .. (i - 1)] = c[key]
+	end
+	vim.g.colors_name = "pirokai-" .. variant
+end
+
+function M.lualine(variant)
+	local c = assert(M.palettes[variant], "unknown Pirokai variant: " .. tostring(variant))
+	local section = function(color)
+		return {
+			a = { fg = c.bg, bg = color, gui = "bold" },
+			b = { fg = c.text, bg = c.elevated },
+			c = { fg = c.fg, bg = c.surface },
+		}
+	end
+	return {
+		normal = section(c.cyan),
+		insert = section(c.green),
+		visual = section(c.purple),
+		replace = section(c.red),
+		command = section(c.yellow),
+		terminal = section(c.orange),
+		inactive = {
+			a = { fg = c.comment, bg = c.surface },
+			b = { fg = c.comment, bg = c.surface },
+			c = { fg = c.comment, bg = c.bg },
+		},
+	}
+end
+
+return M
